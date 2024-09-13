@@ -11,6 +11,25 @@ Synchronous Execution means that when an event (like saving a model) occurs, the
 **Code Snippet**:
 
 ```python
+# app/views.py
+def register_employee(request):
+    if request.method == 'POST':
+        form = EmployeeRegistrationForm(request.POST)
+        if form.is_valid():
+            logger.info("Before Saving ...")
+            print(f"Signal Caller thread ID: {threading.get_ident()}")
+
+            form.save()  # This triggers the post_save signal
+            logger.info("After Saving....")
+            return HttpResponse('Employee Registered  Successfully!! ')
+    else:
+        form = EmployeeRegistrationForm()
+
+    return render(request, 'register.html', {'form': form})
+
+```
+
+```python
 # app/signals.py
 
 def employee_post_save_handler(sender, instance, created, **kwargs):
