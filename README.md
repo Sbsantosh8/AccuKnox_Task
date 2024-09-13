@@ -44,7 +44,8 @@ def employee_post_save_handler(sender, instance, created, **kwargs):
 ```
 
 Here, if signals were asynchronous, <br>
-the "After Saving...." log would appear immediately after "Before Saving ...", without waiting for the signal handler to finish.<br>
+the "After Saving...." log would appear immediately after "Before Saving ...", <br>
+without waiting for the signal handler to finish.<br>
 
 But since the signals are synchronous, the signal handler runs to completion before the "After Saving...." message is logged.
 
