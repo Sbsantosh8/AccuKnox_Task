@@ -1,26 +1,24 @@
-Topic - Django Signals
- 
-Question 1: Are Django Signals Executed Synchronously or Asynchronously?
+## Topic - Django Signals
 
-Answer: By default, Django signals are executed synchronously.
+### Question 1: Are Django Signals Executed Synchronously or Asynchronously?
 
-Explanation:
+**Answer**: By default, Django signals are executed synchronously.
 
-Synchronous Execution means that when an event (like saving a model) occurs, the corresponding signal is triggered, and the signal handler runs immediately, before the next line of code after the event continues executing.
-In code, the form.save() method triggers the post_save signal, which is handled by employee_post_save_handler.
+**Explanation**:
 
-Code Proof:
+Synchronous Execution means that when an event (like saving a model) occurs, the corresponding signal is triggered, and the signal handler runs immediately, before the next line of code after the event continues executing. In code, the `form.save()` method triggers the `post_save` signal, which is handled by `employee_post_save_handler`.
 
+**Code Proof**:
+
+```python
 # app/signals.py
 
 def employee_post_save_handler(sender, instance, created, **kwargs):
     logger.info("Signal handler started.")
-    time.sleep(4) # delays 4 seconds
+    time.sleep(4)  # Delays 4 seconds
     logger.info(f"Signal handler thread ID: {threading.get_ident()}")
     # This thread ID will match the one in the caller
 
-
-Here, if signals were asynchronous, the "After Saving...." log would appear immediately after "Before Saving ...", without waiting for the signal handler to finish. But since the signals are synchronous, the signal handler runs to completion before the "After Saving...." message is logged.
 -----------------------------------------------------------------------------------------------------------------------------
 
 Question 2: Do Django Signals Run in the Same Thread as the Caller?
